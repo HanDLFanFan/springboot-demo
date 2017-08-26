@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta content="text/html" charset="UTF-8" />
+    <title>My Spring Boot First Thymeleaf Page</title>
+</head>
+<body>
+
+    <div >
+        <h3>thymeleaf使用案例</h3>
+    </div>
+
+
+    <div th:if="${not #lists.isEmpty(people)}">
+            <div>
+                <h3>列表</h3>
+            </div>
+            <div>
+                <ul>
+                    <li th:each="person:${people}">
+                        <span th:text="${person.name}" />
+                        <span th:text="${person.age}" />
+                        <span th:text="${person.desc}" />
+                        <button class="btn" th:onclick="'getName(\''+${person.name}+'\');'">
+                            点击获取名字</button>
+                    </li>
+                </ul>
+            </div>
+    </div>
+
+    <script type="text/javascript" th:src="@{jquery-3.2.1.min.js}"></script>
+
+<!-- 在javascript中使用thymeleaf-->
+<script th:inline="javascript">
+    var single = [[${single}]];
+    console.log(single.name+"/"+single.age+"/"+single.desc)
+
+    function getName(name) {
+        console.log(name);
+    }
+
+</script>
+</body>
+</html>
