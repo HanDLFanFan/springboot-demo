@@ -103,5 +103,94 @@ WEB相关:src/main/resource/static:存放脚本样式、图片等静态资源
             查看src/main/java/com.handl.springboot.common.spring.WebServerConfig文件
 
 
+数据库相关：
+        1.使用mysql，引入mysql-conn***-java包
+          使用jpa/mybatis引入springboot依赖包
+
+        2.在application.properties配置datasource属性
+
+        3.JPA使用看demo
+
+        4.Spring Data Rest
+            1.配置属性在application.properties
+            2.定制根路径：spring.data.rest.base-path = /api
+            3.定制节点路径：在实体类Repository上使用@RepositoryRestResource(path="persons")
+
+            访问路径为：http://localhost/springboot/api/persons/....
+
+            4.暴露自己的repository接口服务
+                在方法上使用@RestResource(path = "des")
+                方法的参数需要通过@Param("des")绑定
+                请求路径要添加“/search”：
+                    http://localhost/springboot/api_data/users/search/des?des=dt
+
+        5.事务支持：spring boot有自动事务配置，并默认开启声明式事务
+
+缓存相关(NoSql)：
+        1.Redis使用
+            1).引入spring boot Redis依赖
+            2).aplication.properties配置redis属性
+            3).Spring Boot已经配置了默认的StringRedisTemplate和RedisTemplate,可直接注入
+                @Autowired
+                private StringRedisTemplate stringRedisTemplate;
+                @Autowired
+                private RedisTemplate redisTemplate;
+
+            4).也可以使用@Resource注解（指定）StringRedisTemplate和RedisTemplate，基于字符串和对象的简单操作
+                如：
+                    @Autowired
+                    private StringRedisTemplate stringRedisTemplate;
+                    @Resource(name = "stringRedisTemplate")    //和StringRedisTemplate变量名一致
+                    ValueOperations<String,String> valOpsStr;
+
+                    @Autowired
+                    private RedisTemplate redisTemplate;
+                    @Resource(name = "redisTemplate")       //和RedisTemplate变量名一致
+                    ValueOperations<Object,Object> valOpsObj;
+
+            5).修改默认的RedisTemplate序列化方式
+                定义一个RedisConfig，重新定义RedisTemplate对象，重写序列化方式
+                具体查看RedisConfig.java
+
+            6).需要通过redis操作的实体需要序列化
+
+        注意：redisTemplate的使用也是先获得 *Operations
+              所以实际操作的是*Operations对象
+
+        测试url：
+               https://localhost:8443/springboot/stringSet?name=sel&des=dt
+               https://localhost:8443/springboot/redisSet?id=11&name=ttk&age=11&des=mw
+               https://localhost:8443/springboot/valStrSet?name=qq&des=yg
+               https://localhost:8443/springboot/valObjSet?id=22&name=dcw&age=22&des=pt
+
+               https://localhost:8443/springboot/stringGet?name=sel
+               https://localhost:8443/springboot/redisGet?id=11
+               https://localhost:8443/springboot/valStrGet?name=qq
+               https://localhost:8443/springboot/valObjGet?id=22
+
+        2.使用Redis作为spring cache使用
+            1).引入spring boot cache依赖
+            2).在启动类中添加@EnableCache注解
+            3).aplication.properties配置cache属性
+            4).在需要缓存的方法上使用@Cacheable @CachePut @CacheEvict @Caching注解以使用缓存
+
+消息队列：
+        1.jms(activeMq):和maven多项目的Project类似
+
+        2.amqp(rabbitmq):和jms类似，队列需要在java配置文件中配置
+
+测试：和maven多项目的Project类似
 
 
+监控：在项目里添加spring-boot-starter-actuator和spring-hateoas依赖，用来开启监控endpoint
+        autoconfig:当前应用的所有自动配置
+        beans:当前应用的所有bean的信息
+        configprops:当前应用中所有的配置属性
+        dump:显示当前应用线程状态信息
+        env:显示当前应用的环境信息
+        health:显示当前应用健康状态
+        info:显示当前应用信息
+        metrics:显示当前应用的各项指标信息
+        mappings:显示当前所有的@RequestMapping映射的路径
+        shutdown:关闭当前应用(默认关闭)，在application.propertion中开启，endpoints.shutdown.enabled=true
+        trace:显示追踪信息(默认最新的http请求)

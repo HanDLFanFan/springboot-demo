@@ -1,15 +1,14 @@
 package com.handl.springboot;
 
-import org.springframework.beans.factory.annotation.Value;
+import com.handl.springboot.common.mq.amqp.AmqpSender;
+import com.handl.springboot.common.mq.jms.JmsSender;
+import com.handl.springboot.dao.UserRepository;
+import com.handl.springboot.pojo.entiry.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
-import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.cache.annotation.EnableCaching;
 
 /**
  *
@@ -36,11 +35,43 @@ import org.springframework.web.bind.annotation.RestController;
  * 			1):在src/main/resource下新建一个banner.txt
  * 			2):通过http://patorjk.com/software/taag网站生成字符，将网站字符复制到banner.txt中
  *
+ * 4.实现CommandLineRunner接口并重写run方法，项目启动时自动执行
+ *
+ *
  */
-@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
-public class SpringbootDemoApplication {
+@SpringBootApplication//(exclude = {DataSourceAutoConfiguration.class})
+@EnableCaching	//启动缓存
+public class SpringbootDemoApplication implements CommandLineRunner{
 
 	public static void main(String[] args) {
 		SpringApplication.run(SpringbootDemoApplication.class, args);
+	}
+
+	@Autowired
+	private JmsSender jmsSender;
+	@Autowired
+	private AmqpSender amqpSender;
+
+	@Autowired
+	private UserRepository userRepository;
+
+	/**
+	 *
+	 * @param args
+	 * @throws Exception
+	 */
+	@Override
+	public void run(String... args) throws Exception {
+		User user =userRepository.findOne((long) 1);
+		//jms(user);
+		amqp(user);
+	}
+
+	public void amqp(User user){
+		amqpSender.sendMsg(user);
+	}
+
+	public void jms(User user){
+		jmsSender.sendMsg(user);
 	}
 }

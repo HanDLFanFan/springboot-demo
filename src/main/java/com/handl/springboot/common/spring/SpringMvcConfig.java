@@ -21,6 +21,9 @@ public class SpringMvcConfig extends WebMvcConfigurerAdapter {
      */
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/index").setViewName("index");
+        /*registry.addViewController("/index").setViewName("index");
+        registry.addViewController("/ws").setViewName("websocket");
+        registry.addViewController("/login").setViewName("loginwebsocket");
+        registry.addViewController("/chat").setViewName("websocketchat");*/
     }
 }
