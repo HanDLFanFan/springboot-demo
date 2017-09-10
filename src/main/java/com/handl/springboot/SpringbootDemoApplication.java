@@ -64,7 +64,7 @@ public class SpringbootDemoApplication implements CommandLineRunner{
 	public void run(String... args) throws Exception {
 		User user =userRepository.findOne((long) 1);
 		//jms(user);
-		amqp(user);
+//		amqp(user);
 	}
 
 	public void amqp(User user){
