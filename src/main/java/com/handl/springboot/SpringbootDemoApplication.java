@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.cache.annotation.EnableCaching;
 
 /**
@@ -41,6 +42,7 @@ import org.springframework.cache.annotation.EnableCaching;
  */
 @SpringBootApplication//(exclude = {DataSourceAutoConfiguration.class})
 @EnableCaching	//启动缓存
+@ServletComponentScan
 public class SpringbootDemoApplication implements CommandLineRunner{
 
 	public static void main(String[] args) {

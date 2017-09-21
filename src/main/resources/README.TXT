@@ -109,7 +109,9 @@ WEB相关:src/main/resource/static:存放脚本样式、图片等静态资源
 
         2.在application.properties配置datasource属性
 
-        3.JPA使用看demo
+        3. JPA和Mybatis
+            1).JPA使用看demo--->dao/UserRepository
+            2).Mybatis--->mapper/UserMapper，测试类中测试
 
         4.Spring Data Rest
             1.配置属性在application.properties
@@ -125,6 +127,15 @@ WEB相关:src/main/resource/static:存放脚本样式、图片等静态资源
                     http://localhost/springboot/api_data/users/search/des?des=dt
 
         5.事务支持：spring boot有自动事务配置，并默认开启声明式事务
+
+        6.druid连接池配置
+            1).加入druid包
+            2).修改application.properties文件
+                spring.datasource.type=com.alibaba.druid.pool.DruidDataSource
+            3).添加druid的servlet和filter,分别在servlet和filter包下(注解方式)
+            4).在启动类中添加@ServletComponentScan注解以扫描servlet和filter
+
+            访问路径https://localhost:8443/springboot/druid/
 
 缓存相关(NoSql)：
         1.Redis使用
@@ -178,6 +189,13 @@ WEB相关:src/main/resource/static:存放脚本样式、图片等静态资源
         1.jms(activeMq):和maven多项目的Project类似
 
         2.amqp(rabbitmq):和jms类似，队列需要在java配置文件中配置
+
+ES:搜索
+    1.引入es的boot支持jar包
+    2.配置application.properties
+    3.pojo/es实体类
+    4.dao/es的Repository
+    5.测试demo中操作测试
 
 测试：和maven多项目的Project类似
 
